@@ -17,6 +17,8 @@ exports.handler = async (event, context, callback) => {
     
     const globals = require('../globals.js')(body.testing === true); // GLOBAL VARIABLES    
     const stripe = require('stripe')(process.env[`STRIPE_${body.testing === true ? 'TEST_' : ''}SECRET_KEY`]);
+    const SparkPost = require('sparkpost');
+    const client = new SparkPost(process.env['SPARKPOST_KEY']);
     
     return stripe.customers.list({email: body.email})
     .then(res => {
@@ -33,7 +35,37 @@ exports.handler = async (event, context, callback) => {
             })
             .then(res => {
                 console.log(res);
-                callback(null, {statusCode: 204,headers});
+                return client.transmissions.send({
+                    "options": {
+                        "sandbox": true
+                    },
+                    "content": {
+                        "template_id": "signin"
+                    },
+                    "substitution_data": {
+                        "email_address": res.email,
+                        "code": signinCode
+                    },
+                    "recipients": [{
+                        "address": res.email,
+                        "name": typeof res.metadata.firstName !== undefined ? res.metadata.firstName : res.email
+                    }]
+                })
+                .then(data => {
+                    console.log('Email succeeded.');
+                    console.log(data);
+                    callback(null, {
+                        statusCode: 200,
+                        body: JSON.stringify(data)
+                    });
+                }).catch(err => {
+                    console.log('Email failed.');
+                    console.log(err);
+                    callback(null, {
+                        statusCode: 502,
+                        body: JSON.stringify(err)
+                    });
+                });
             });
         } else {
             callback(null, {statusCode: 404,headers,body: JSON.stringify({code: 'USER_NOT_FOUND'})});
