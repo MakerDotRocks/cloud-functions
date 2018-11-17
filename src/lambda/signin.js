@@ -36,9 +36,6 @@ exports.handler = async (event, context, callback) => {
             .then(res => {
                 console.log(res);
                 return client.transmissions.send({
-                    "options": {
-                        "sandbox": true
-                    },
                     "content": {
                         "template_id": "signin"
                     },
