@@ -37,6 +37,7 @@ exports.handler = async (event, context, callback) => {
                 })
                 .then(res => {
                     console.log(res);
+                    callback(null, {statusCode: 200,headers});
                 });
             } else {
                 callback(null, {statusCode: 401,headers,body: JSON.stringify({code: 'WRONG_AUTH_CODE'})});
