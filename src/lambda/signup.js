@@ -34,7 +34,7 @@ exports.handler = async (event, context, callback) => {
             .then(res => {
                 console.log(res);
                 var signinLambda = require('./signin.js').handler;
-                signinLambda({httpMethod: 'POST', body: JSON.stringify({email: body.email, testing: body.testing})},{},callback);
+                return signinLambda({httpMethod: 'POST', body: JSON.stringify({email: body.email, testing: body.testing})},{},callback);
             });
         }
     });
