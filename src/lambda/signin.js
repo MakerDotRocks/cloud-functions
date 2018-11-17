@@ -53,6 +53,7 @@ exports.handler = async (event, context, callback) => {
                     console.log(data);
                     callback(null, {
                         statusCode: 200,
+                        headers,
                         body: JSON.stringify(data)
                     });
                 }).catch(err => {
@@ -60,6 +61,7 @@ exports.handler = async (event, context, callback) => {
                     console.log(err);
                     callback(null, {
                         statusCode: 502,
+                        headers,
                         body: JSON.stringify(err)
                     });
                 });
