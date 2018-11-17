@@ -154,7 +154,7 @@ exports.handler = async (event, context, callback) => {
                     }))
                 }))
             }
-            if(typeof metadata.wipUsername == 'string' && metadata.wipUsername.length > 0){
+            if(typeof metadata.twitchUsername == 'string' && metadata.twitchUsername.length > 0){
                 pageInfo.twitchUsername = metadata.twitchUsername;
             }
             
