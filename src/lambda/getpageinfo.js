@@ -148,11 +148,42 @@ exports.handler = async (event, context, callback) => {
                     var user = res.data.user;
                     pageInfo.wipName = `${user.first_name} ${user.last_name}`;
                     pageInfo.wipStreak = user.streak;
-                    pageInfo.wipTasks = user.todos.map(todo => ({
-                        message: todo.body,
-                        timeAgo: moment(todo.completed_at).from(Date.now())
+                    pageInfo.wipTasks = user.todos.map(task => ({
+                        message: task.body,
+                        timeAgo: moment(task.completed_at).from(Date.now())
                     }))
                 }))
+            }
+            if(typeof metadata.makerlogUsername == 'string' && metadata.makerlogUsername.length > 0){
+                pageInfo.makerlogUsername = metadata.makerlogUsername;
+                var makerlogID = 0;
+                promiseChains.push(rp({
+                    method: 'GET',
+                    uri: `https://api.getmakerlog.com/users/username/${metadata.makerlogUsername}/`,
+                    json: true
+                })
+                .then(res => {
+                    console.log(res);
+                    makerlogID = res.id;
+                    pageInfo.makerlogName = `${res.first_name} ${res.last_name}`;
+                    pageInfo.makerlogImage = res.avatar;
+                    pageInfo.makerlogStatus = res.status;
+                    pageInfo.makerlogDescription = res.description;
+                    pageInfo.makerlogStreak = res.streak;
+                    pageInfo.makerlogActivityDataPoints = res.activity_trend;
+                })
+                .then(() => rp({
+                    method: 'GET',
+                    uri: `https://api.getmakerlog.com/users/${makerlogID}/recent_tasks`,
+                    json: true
+                }))
+                .then(res => {
+                    pageInfo.makerlogTasks = res.filter(task => task.done).map(task => ({
+                        message: task.content,
+                        timeAgo: moment(task.done_at).from(Date.now())
+                    }));
+                    console.log(pageInfo.makerlogTasks);
+                }));
             }
             if(typeof metadata.twitchUsername == 'string' && metadata.twitchUsername.length > 0){
                 pageInfo.twitchUsername = metadata.twitchUsername;
