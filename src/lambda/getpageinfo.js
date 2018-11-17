@@ -163,7 +163,6 @@ exports.handler = async (event, context, callback) => {
                     json: true
                 })
                 .then(res => {
-                    console.log(res);
                     makerlogID = res.id;
                     pageInfo.makerlogName = `${res.first_name} ${res.last_name}`;
                     pageInfo.makerlogImage = res.avatar;
@@ -182,7 +181,6 @@ exports.handler = async (event, context, callback) => {
                         message: task.content,
                         timeAgo: moment(task.done_at).from(Date.now())
                     }));
-                    console.log(pageInfo.makerlogTasks);
                 }));
             }
             if(typeof metadata.twitchUsername == 'string' && metadata.twitchUsername.length > 0){
