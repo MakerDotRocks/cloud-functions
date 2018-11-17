@@ -20,11 +20,11 @@ exports.handler = async (event, context, callback) => {
     const humanizeDuration = require('humanize-duration');
     const moment = require('moment');
     
-    return stripe.customers.list({email: body.email})
+    return stripe.customers.list()
     .then(res => {
-        var customersWithEmail = res.data;
-        if(customersWithEmail.length > 0) {
-            var metadata = customersWithEmail[0].metadata;
+        var customersWithUsername = res.data.filter(customer => customer.metadata.username === body.username);
+        if(customersWithUsername.length > 0) {
+            var metadata = customersWithUsername[0].metadata;
             var pageInfo = {};
             var promiseChains = [];
             if(typeof metadata.productHuntUsername == 'string' && metadata.productHuntUsername.length > 0) {
