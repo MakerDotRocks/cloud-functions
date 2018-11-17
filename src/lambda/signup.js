@@ -17,9 +17,7 @@ exports.handler = async (event, context, callback) => {
     
     const globals = require('../globals.js')(body.testing === true); // GLOBAL VARIABLES    
     const stripe = require('stripe')(process.env[`STRIPE_${body.testing === true ? 'TEST_' : ''}SECRET_KEY`]);
-    
-    var trial = body.trial !== false;
-    
+        
     return stripe.customers.list({email: body.email})
     .then(res => {
         var customersWithEmail = res.data;
