@@ -18,14 +18,18 @@ exports.handler = async (event, context, callback) => {
     const globals = require('../globals.js')(body.testing === true); // GLOBAL VARIABLES    
     const stripe = require('stripe')(process.env[`STRIPE_${body.testing === true ? 'TEST_' : ''}SECRET_KEY`]);
         
-    return stripe.customers.list({email: body.email})
+    return stripe.customers.list()
     .then(res => {
-        var customersWithEmail = res.data;
-        if(customersWithEmail.length > 0) {
-            callback(null, {statusCode: 401,headers,body: JSON.stringify({code: 'USER_EXISTS'})});
+        if (res.data.filter(customer => customer.email === body.email).length > 0) {
+            callback(null, {statusCode: 401,headers,body: JSON.stringify({code: 'USER_WITH_EMAIL_EXISTS'})});
+        } else if(res.data.filter(customer => customer.metadata.username === body.username).length > 0) {
+            callback(null, {statusCode: 401,headers,body: JSON.stringify({code: 'USER_WITH_USERNAME_EXISTS'})});
         } else {
             return stripe.customers.create({
-                email: body.email
+                email: body.email,
+                metadata: {
+                    username: body.username
+                }
             })
             .then(res => {
                 console.log(res);
