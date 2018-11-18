@@ -70,7 +70,7 @@ exports.handler = async (event, context, callback) => {
                 }))
                 .then(res => {
                     var products = res.posts;
-                    pageInfo.productHuntTotalVotes = products.map(p => p.votes_count).reduce((total,num) => total + num);
+                    pageInfo.productHuntTotalVotes = products.length > 0 ? products.map(p => p.votes_count).reduce((total,num) => total + num) : 0;
                     pageInfo.productHuntAverageVotes = Math.round(pageInfo.productHuntTotalVotes/products.length);
                     pageInfo.productHuntProducts = products.map(product => ({
                         name: product.name,
@@ -96,7 +96,7 @@ exports.handler = async (event, context, callback) => {
                         }
                     }
                     
-                    var averageDuration = allDurations.reduce((total,num)=>total+num)/allDurations.length;
+                    var averageDuration = allDurations.length > 0 ? allDurations.reduce((total,num)=>total+num)/allDurations.length : 0;
                     
                     var humanizedDurationOptions = {
                         conjunction: ' and ',
