@@ -187,6 +187,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.twitchUsername == 'string' && metadata.twitchUsername.length > 0){
                 pageInfo.twitchUsername = metadata.twitchUsername;
             }
+            if(typeof metadata.personalWebsite == 'string' && metadata.personalWebsite.length > 0){
+                pageInfo.personalWebsite = metadata.personalWebsite;
+            }
             
             return Promise.all(promiseChains)
             .then(() => callback(null, {statusCode: 200,headers,body: JSON.stringify(pageInfo)}))
