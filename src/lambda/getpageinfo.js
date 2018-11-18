@@ -183,7 +183,8 @@ exports.handler = async (event, context, callback) => {
                         message: task.content,
                         timeAgo: moment(task.done_at).from(Date.now())
                     }));
-                }));
+                })
+                .catch(err => console.log(err)));
             }
             if(typeof metadata.twitchUsername == 'string' && metadata.twitchUsername.length > 0){
                 pageInfo.twitchUsername = metadata.twitchUsername;
