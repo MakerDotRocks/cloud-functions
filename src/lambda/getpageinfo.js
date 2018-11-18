@@ -191,6 +191,12 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.personalWebsite == 'string' && metadata.personalWebsite.length > 0){
                 pageInfo.personalWebsite = metadata.personalWebsite;
             }
+            if(typeof metadata.patreonUsername == 'string' && metadata.patreonUsername.length > 0){
+                pageInfo.patreonUsername = metadata.patreonUsername;
+            }
+            if(typeof metadata.bmcUsername == 'string' && metadata.bmcUsername.length > 0){
+                pageInfo.bmcUsername = metadata.bmcUsername;
+            }
             
             return Promise.all(promiseChains)
             .then(() => callback(null, {statusCode: 200,headers,body: JSON.stringify(pageInfo)}))
