@@ -78,7 +78,8 @@ exports.handler = async (event, context, callback) => {
                         votes: product.votes_count,
                         createdEpoch: product.created_at,
                         thumbnailURL: product.thumbnail.image_url.replace(/\?.+/,''),
-                        screenshotURL: product.screenshot_url['850px']
+                        screenshotURL: product.screenshot_url['850px'],
+                        websiteURL: product.redirect_url
                     }));
                     var productDates = products.map(p => new Date(p.created_at).getTime()).sort((a,b) => b-a);
                     var shortestDuration = Infinity;
