@@ -23,7 +23,6 @@ exports.handler = async (event, context, callback) => {
     
     return getAllCustomers(stripe)
     .then(res => {
-        console.log(res.data.length);
         var customersWithUsername = res.data.filter(customer => customer.metadata.username === body.username);
         if(customersWithUsername.length > 0) {
             var metadata = customersWithUsername[0].metadata;
