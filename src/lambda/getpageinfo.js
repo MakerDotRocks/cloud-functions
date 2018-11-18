@@ -77,7 +77,7 @@ exports.handler = async (event, context, callback) => {
                         tagline: product.tagline,
                         votes: product.votes_count,
                         createdEpoch: product.created_at,
-                        thumbnailURL: product.thumbnail.image_url,
+                        thumbnailURL: product.thumbnail.image_url.replace(/\?.+/,''),
                         screenshotURL: product.screenshot_url['850px']
                     }));
                     var productDates = products.map(p => new Date(p.created_at).getTime()).sort((a,b) => b-a);
