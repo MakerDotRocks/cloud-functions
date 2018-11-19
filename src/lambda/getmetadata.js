@@ -26,6 +26,7 @@ exports.handler = async (event, context, callback) => {
                 var metadata = customersWithUsername[0].metadata;
                 delete metadata.signinCode;
                 delete metadata.email;
+                metadata.username = body.username;
                 callback(null, {statusCode: 200,headers,body: JSON.stringify(metadata)});
             } else {
                 callback(null, {statusCode: 401,headers,body: JSON.stringify({code: 'WRONG_AUTH_CODE'})});
