@@ -19,11 +19,10 @@ exports.handler = async (event, context, callback) => {
     const rp = require('request-promise');
     const humanizeDuration = require('humanize-duration');
     const moment = require('moment');
-    const getAllCustomers = require('../getAllCustomers.js');
     
-    return getAllCustomers(stripe)
+    return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
-        var customersWithUsername = res.data.filter(customer => customer.metadata.username === body.username);
+        var customersWithUsername = res.data;
         if(customersWithUsername.length > 0) {
             var metadata = customersWithUsername[0].metadata;
             var pageInfo = {};

@@ -18,13 +18,14 @@ exports.handler = async (event, context, callback) => {
     const globals = require('../globals.js')(body.testing === true); // GLOBAL VARIABLES    
     const stripe = require('stripe')(process.env[`STRIPE_${body.testing === true ? 'TEST_' : ''}SECRET_KEY`]);
     
-    return stripe.customers.list({email: body.email})
+    return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
-        var customersWithEmail = res.data;
-        if(customersWithEmail.length > 0) {
-            if(customersWithEmail[0].metadata.signinCode === body.code) {
-                var metadata = customersWithEmail[0].metadata;
+        var customersWithUsername = res.data;
+        if(customersWithUsername.length > 0) {
+            if(customersWithUsername[0].metadata.signinCode === body.code) {
+                var metadata = customersWithUsername[0].metadata;
                 delete metadata.signinCode;
+                delete metadata.email;
                 callback(null, {statusCode: 200,headers,body: JSON.stringify(metadata)});
             } else {
                 callback(null, {statusCode: 401,headers,body: JSON.stringify({code: 'WRONG_AUTH_CODE'})});

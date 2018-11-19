@@ -20,17 +20,17 @@ exports.handler = async (event, context, callback) => {
     const SparkPost = require('sparkpost');
     const client = new SparkPost(process.env['SPARKPOST_KEY']);
     
-    return stripe.customers.list({email: body.email})
+    return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
-        var customersWithEmail = res.data;
-        if(customersWithEmail.length > 0) {
+        var customersWithUsername = res.data;
+        if(customersWithUsername.length > 0) {
             // Technique from https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript/9719815#comment57492631_9719815
             var signinCode = Math.random().toString(36).substr(2, 8);
             console.log(signinCode);
-            var updatedMetadata = customersWithEmail[0].metadata;
+            var updatedMetadata = customersWithUsername[0].metadata;
             updatedMetadata.signinCode = signinCode;
             
-            return stripe.customers.update(customersWithEmail[0].id, {
+            return stripe.customers.update(customersWithUsername[0].id, {
                 metadata: updatedMetadata
             })
             .then(res => {
@@ -40,12 +40,13 @@ exports.handler = async (event, context, callback) => {
                         "template_id": "signin"
                     },
                     "substitution_data": {
-                        "email_address": res.email,
+                        "email_address": res.metadata.email,
+                        "username": res.email.replace('@username.maker.rocks',''),
                         "code": signinCode
                     },
                     "recipients": [{
-                        "address": res.email,
-                        "name": typeof res.metadata.firstName !== undefined ? res.metadata.firstName : res.email
+                        "address": res.metadata.email,
+                        "name": typeof res.metadata.firstName !== undefined ? res.metadata.firstName : res.email.replace('@username.maker.rocks','')
                     }]
                 })
                 .then(data => {

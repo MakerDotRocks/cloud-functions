@@ -18,12 +18,12 @@ exports.handler = async (event, context, callback) => {
     const globals = require('../globals.js')(body.testing === true); // GLOBAL VARIABLES    
     const stripe = require('stripe')(process.env[`STRIPE_${body.testing === true ? 'TEST_' : ''}SECRET_KEY`]);
     
-    return stripe.customers.list({email: body.email})
+    return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
-        var customersWithEmail = res.data;
-        if(customersWithEmail.length > 0) {
-            if(customersWithEmail[0].metadata.signinCode === body.code) {
-                var updatedMetadata = customersWithEmail[0].metadata;
+        var customersWithUsername = res.data;
+        if(customersWithUsername.length > 0) {
+            if(customersWithUsername[0].metadata.signinCode === body.code) {
+                var updatedMetadata = customersWithUsername[0].metadata;
                 var keys = Object.keys(body.metadata);
                 for(var i = 0; i <  keys.length; i++) {
                     var key = keys[i];
@@ -32,7 +32,7 @@ exports.handler = async (event, context, callback) => {
                     }
                 }
                 console.log(updatedMetadata);
-                return stripe.customers.update(customersWithEmail[0].id, {
+                return stripe.customers.update(customersWithUsername[0].id, {
                     metadata: updatedMetadata
                 })
                 .then(res => {
