@@ -14,6 +14,7 @@ exports.handler = async (event, context, callback) => {
     }
     
     var body = JSON.parse(event.body);
+    body.username = body.username.toLowerCase();
     
     const globals = require('../globals.js')(body.testing === true); // GLOBAL VARIABLES    
     const stripe = require('stripe')(process.env[`STRIPE_${body.testing === true ? 'TEST_' : ''}SECRET_KEY`]);
