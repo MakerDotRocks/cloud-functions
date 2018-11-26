@@ -201,6 +201,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.mediumUsername == 'string' && metadata.mediumUsername.length > 0){
                 pageInfo.mediumUsername = metadata.mediumUsername;
             }
+            if(typeof metadata.telegramUsername == 'string' && metadata.telegramUsername.length > 0){
+                pageInfo.telegramUsername = metadata.telegramUsername;
+            }
             
             return Promise.all(promiseChains)
             .then(() => callback(null, {statusCode: 200,headers,body: JSON.stringify(pageInfo)}))
