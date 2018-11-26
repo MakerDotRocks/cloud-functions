@@ -198,6 +198,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.bmcUsername == 'string' && metadata.bmcUsername.length > 0){
                 pageInfo.bmcUsername = metadata.bmcUsername;
             }
+            if(typeof metadata.mediumUsername == 'string' && metadata.mediumUsername.length > 0){
+                pageInfo.mediumUsername = metadata.mediumUsername;
+            }
             
             return Promise.all(promiseChains)
             .then(() => callback(null, {statusCode: 200,headers,body: JSON.stringify(pageInfo)}))
