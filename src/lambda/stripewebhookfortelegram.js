@@ -34,7 +34,7 @@ exports.handler = async (event, context, callback) => {
 `👤🤘 New user for maker<b>.</b>rocks!
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
     } else if('customer.updated') {
-        if(type webhookEvent.data.object.previous_attributes.signinCode === 'undefined') {
+        if(typeof webhookEvent.data.object.previous_attributes.signinCode === 'undefined') {
             textToSend =
 `⚙️🤘 A maker<b>.</b>rocks user updated their profile
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
