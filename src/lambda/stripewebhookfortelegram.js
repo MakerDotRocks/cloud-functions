@@ -33,6 +33,8 @@ exports.handler = async (event, context, callback) => {
         textToSend =
 `👤🤘 New user for maker<b>.</b>rocks!
              👉 https://maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
+    } else {
+        textToSend = JSON.stringify(webhookEvent, null, 2);
     }
     
     if(textToSend !== null || true) {
