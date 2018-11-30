@@ -37,8 +37,10 @@ exports.handler = async (event, context, callback) => {
         if(typeof webhookEvent.data.previous_attributes !== 'undefined'
            && typeof webhookEvent.data.previous_attributes.metadata !== 'undefined'
            && typeof webhookEvent.data.previous_attributes.metadata.signinCode === 'undefined') {
+            var keys = Object.keys(webhookEvent.data.previous_attributes.metadata);
+            var keyString = keys.length > 1 ? keys.splice(0, keys.length - 1).join(', ') + ' and ' + keys[keys.length - 1] : keys[0];
             textToSend =
-`⚙️🤘 A maker<b>.</b>rocks user updated their profile
+`⚙️🤘 A maker<b>.</b>rocks user updated their ${keyString}
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
         }
     } else {
