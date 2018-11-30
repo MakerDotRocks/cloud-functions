@@ -30,7 +30,9 @@ exports.handler = async (event, context, callback) => {
     var textToSend = null;
     
     if(webhookEvent.type == 'customer.created') {
-        textToSend = `New account on maker.rocks! maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
+        textToSend =
+`👤🤘 New user for maker.rocks!
+             👉 https://maker<b>.</b>rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
     }
     
     if(textToSend !== null || true) {
@@ -40,7 +42,8 @@ exports.handler = async (event, context, callback) => {
             json: true,
             body: {
                 chat_id: process.env['TELEGRAM_CHAT_ID'],
-                text: JSON.stringify(webhookEvent, null, 2) + '----------- \n\n' + textToSend
+                text: JSON.stringify(webhookEvent, null, 2) + '\n\n ----------- \n\n' + textToSend,
+                parse_mode: 'HTML'
             }
         })
     }
