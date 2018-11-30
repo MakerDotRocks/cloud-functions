@@ -34,9 +34,9 @@ exports.handler = async (event, context, callback) => {
 `👤🤘 New user for maker<b>.</b>rocks!
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
     } else if('customer.updated') {
-        if(typeof webhookEvent.data.object.previous_attributes !== 'undefined'
-           && typeof webhookEvent.data.object.previous_attributes.metadata !== 'undefined'
-           && typeof webhookEvent.data.object.previous_attributes.metadata.signinCode === 'undefined') {
+        if(typeof webhookEvent.data.previous_attributes !== 'undefined'
+           && typeof webhookEvent.data.previous_attributes.metadata !== 'undefined'
+           && typeof webhookEvent.data.previous_attributes.metadata.signinCode === 'undefined') {
             textToSend =
 `⚙️🤘 A maker<b>.</b>rocks user updated their profile
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
