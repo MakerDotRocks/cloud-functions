@@ -31,7 +31,7 @@ exports.handler = async (event, context, callback) => {
     
     if(webhookEvent.type == 'customer.created') {
         textToSend =
-`👤🤘 New user for maker<b>.</b>.rocks!
+`👤🤘 New user for maker<b>.</b>rocks!
              👉 https://maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
     }
     
