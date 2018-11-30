@@ -42,7 +42,7 @@ exports.handler = async (event, context, callback) => {
             json: true,
             body: {
                 chat_id: process.env['TELEGRAM_CHAT_ID'],
-                text: JSON.stringify(webhookEvent, null, 2) + '\n\n ----------- \n\n' + textToSend,
+                text: textToSend,
                 parse_mode: 'HTML'
             }
         })
