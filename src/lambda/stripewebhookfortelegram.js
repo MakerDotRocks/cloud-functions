@@ -32,7 +32,7 @@ exports.handler = async (event, context, callback) => {
     if(webhookEvent.type == 'customer.created') {
         
         textToSend =
-`👤🤘 New user for maker<b>.</b>rocks!
+`🤘👤 New user for maker<b>.</b>rocks!
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
         
     } else if('customer.updated') {
@@ -45,7 +45,7 @@ exports.handler = async (event, context, callback) => {
             var keyString = keys.length > 1 ? keys.splice(0, keys.length - 1).join(', ') + ' and ' + keys[keys.length - 1] : keys[0];
             
             textToSend =
-`⚙️🤘 A maker<b>.</b>rocks user updated their ${keyString}
+`🤘⚙️ A maker<b>.</b>rocks user updated their ${keyString}
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
             
         } else if (typeof webhookEvent.data.previous_attributes !== 'undefined'
@@ -53,7 +53,7 @@ exports.handler = async (event, context, callback) => {
            && typeof webhookEvent.data.previous_attributes.metadata.signinCode !== 'undefined') {
             
             textToSend =
-`🔑🤘 A maker<b>.</b>rocks user requested a login code
+`🤘🔑 A maker<b>.</b>rocks user requested a login code
              maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
             
         }
