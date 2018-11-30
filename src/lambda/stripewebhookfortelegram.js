@@ -27,13 +27,21 @@ exports.handler = async (event, context, callback) => {
         callback(null,{statusCode: 400, body: JSON.stringify(err)});
     }
     
-    return rp({
-        method: 'POST',
-        uri: `https://api.telegram.org/bot${process.env['TELEGRAM_BOT_TOKEN']}/sendMessage`,
-        json: true,
-        body: {
-            chat_id: process.env['TELEGRAM_CHAT_ID'],
-            text: JSON.stringify(webhookEvent, null, 2)
-        }
-    })
+    var textToSend = null;
+    
+    if(webhookEvent.type == 'customer.created') {
+        textToSend = `New account on maker.rocks! maker.rocks/${webhookEvent.data.object.email.replace('@username.maker.rocks','')}`;
+    }
+    
+    if(textToSend !== null || true) {
+        return rp({
+            method: 'POST',
+            uri: `https://api.telegram.org/bot${process.env['TELEGRAM_BOT_TOKEN']}/sendMessage`,
+            json: true,
+            body: {
+                chat_id: process.env['TELEGRAM_CHAT_ID'],
+                text: JSON.stringify(webhookEvent, null, 2) + '----------- \n\n' + textToSend
+            }
+        })
+    }
 }
