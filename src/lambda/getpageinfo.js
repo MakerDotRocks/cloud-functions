@@ -204,6 +204,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.telegramUsername == 'string' && metadata.telegramUsername.length > 0){
                 pageInfo.telegramUsername = metadata.telegramUsername;
             }
+            if(typeof metadata.youtubeURL == 'string' && metadata.youtubeURL.length > 0){
+                pageInfo.youtubeURL = metadata.youtubeURL;
+            }
             
             return Promise.all(promiseChains)
             .then(() => callback(null, {statusCode: 200,headers,body: JSON.stringify(pageInfo)}))
