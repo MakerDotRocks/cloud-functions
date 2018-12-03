@@ -207,6 +207,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.youtubeURL == 'string' && metadata.youtubeURL.length > 0){
                 pageInfo.youtubeURL = metadata.youtubeURL;
             }
+            if(typeof metadata.profileHue == 'string' && metadata.profileHue.length > 0){
+                pageInfo.profileHue = metadata.profileHue;
+            }
             
             return Promise.all(promiseChains)
             .then(() => callback(null, {statusCode: 200,headers,body: JSON.stringify(pageInfo)}))
