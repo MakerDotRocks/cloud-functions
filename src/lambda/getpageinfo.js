@@ -192,6 +192,12 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.personalWebsite == 'string' && metadata.personalWebsite.length > 0){
                 pageInfo.personalWebsite = metadata.personalWebsite;
             }
+            if(typeof metadata.personalBlog == 'string' && metadata.personalBlog.length > 0){
+                pageInfo.personalBlog = metadata.personalBlog;
+            }
+            if(typeof metadata.publicEmail == 'string' && metadata.publicEmail.length > 0){
+                pageInfo.publicEmail = metadata.publicEmail;
+            }
             if(typeof metadata.patreonUsername == 'string' && metadata.patreonUsername.length > 0){
                 pageInfo.patreonUsername = metadata.patreonUsername;
             }
