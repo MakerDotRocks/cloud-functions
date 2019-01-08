@@ -109,7 +109,8 @@ exports.handler = async (event, context, callback) => {
                     pageInfo.productHuntShortestDuration = humanizeDuration(shortestDuration, humanizedDurationOptions);
                     pageInfo.productHuntLongestDuration = humanizeDuration(longestDuration, humanizedDurationOptions);
                     pageInfo.productHuntAverageDuration = humanizeDuration(averageDuration, humanizedDurationOptions);
-                }));
+                })
+                .catch(err => console.log(err)));
             }
             if(typeof metadata.twitterUsername == 'string' && metadata.twitterUsername.length > 0) {
                 pageInfo.twitterUsername = metadata.twitterUsername;
@@ -122,7 +123,8 @@ exports.handler = async (event, context, callback) => {
                     pageInfo.twitterName = twitterUser.name;
                     pageInfo.twitterFollowers = twitterUser.followers_count;
                     pageInfo.twitterFollowersFormatted = twitterUser.formatted_followers_count.replace(' followers','');
-                }));
+                })
+                .catch(err => console.log(err)));
             }
             if(typeof metadata.wipUsername == 'string' && metadata.wipUsername.length > 0){
                 pageInfo.wipUsername = metadata.wipUsername;
@@ -154,7 +156,8 @@ exports.handler = async (event, context, callback) => {
                         message: task.body,
                         timeAgo: moment(task.completed_at).from(Date.now())
                     }))
-                }))
+                })
+                .catch(err => console.log(err)))
             }
             if(typeof metadata.makerlogUsername == 'string' && metadata.makerlogUsername.length > 0){
                 pageInfo.makerlogUsername = metadata.makerlogUsername;
