@@ -213,6 +213,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.telegramUsername == 'string' && metadata.telegramUsername.length > 0){
                 pageInfo.telegramUsername = metadata.telegramUsername;
             }
+            if(typeof metadata.gitHubUsername == 'string' && metadata.gitHubUsername.length > 0){
+                pageInfo.gitHubUsername = metadata.gitHubUsername;
+            }
             if(typeof metadata.youtubeURL == 'string' && metadata.youtubeURL.length > 0){
                 pageInfo.youtubeURL = metadata.youtubeURL;
             }
