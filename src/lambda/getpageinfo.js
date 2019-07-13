@@ -21,8 +21,11 @@ exports.handler = async (event, context, callback) => {
     const humanizeDuration = require('humanize-duration');
     const moment = require('moment');
     const marked = require('marked');
-    const DOMPurify = require('dompurify');
-    
+    const createDOMPurify = require('dompurify');
+    const { JSDOM } = require('jsdom');
+    const window = (new JSDOM('')).window;
+    const DOMPurify = createDOMPurify(window);
+
     return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
         var customersWithUsername = res.data;
