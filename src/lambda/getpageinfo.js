@@ -222,6 +222,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.profileHue == 'string' && metadata.profileHue.length > 0){
                 pageInfo.profileHue = metadata.profileHue;
             }
+            if(typeof metadata.bio == 'string' && metadata.bio.length > 0){
+                pageInfo.bio = metadata.bio;
+            }
             
             return Promise.all(promiseChains)
             .then(() => callback(null, {statusCode: 200,headers,body: JSON.stringify(pageInfo)}))
