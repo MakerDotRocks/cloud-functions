@@ -236,7 +236,7 @@ exports.handler = async (event, context, callback) => {
                             };
                         }
                     }
-                }).replace(/\n/g, '<br>');
+                });
             }
             
             return Promise.all(promiseChains)
