@@ -223,7 +223,7 @@ exports.handler = async (event, context, callback) => {
                 pageInfo.profileHue = metadata.profileHue;
             }
             if(typeof metadata.bio == 'string' && metadata.bio.length > 0){
-                pageInfo.bio = metadata.bio;
+                pageInfo.bio = metadata.bio.replace(/\n/g, '<br>');
             }
             
             return Promise.all(promiseChains)
