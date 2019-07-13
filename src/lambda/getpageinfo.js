@@ -21,6 +21,7 @@ exports.handler = async (event, context, callback) => {
     const humanizeDuration = require('humanize-duration');
     const moment = require('moment');
     const marked = require('marked');
+    const sanitizeHtml = require('sanitize-html');
 
     return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
@@ -224,7 +225,18 @@ exports.handler = async (event, context, callback) => {
                 pageInfo.profileHue = metadata.profileHue;
             }
             if(typeof metadata.bio == 'string' && metadata.bio.length > 0){
-                pageInfo.bio = marked(metadata.bio).replace(/\n/g, '<br>');
+                pageInfo.bio = sanitizeHtml(marked(metadata.bio), {
+                    transformTags: {
+                        a: function(tagName, attribs) {
+                            attribs.target = '_blank';
+                            attribs.rel = 'noopener noreferrer nofollow';
+                            return {
+                                tagName: tagName,
+                                attribs: attribs
+                            };
+                        }
+                    }
+                }).replace(/\n/g, '<br>');
             }
             
             return Promise.all(promiseChains)
