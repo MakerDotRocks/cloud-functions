@@ -218,6 +218,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.gitHubUsername == 'string' && metadata.gitHubUsername.length > 0){
                 pageInfo.gitHubUsername = metadata.gitHubUsername;
             }
+            if(typeof metadata.linkedinUsername == 'string' && metadata.linkedinUsername.length > 0){
+                pageInfo.linkedinUsername = metadata.linkedinUsername;
+            }
             if(typeof metadata.youtubeURL == 'string' && metadata.youtubeURL.length > 0){
                 pageInfo.youtubeURL = metadata.youtubeURL;
             }
