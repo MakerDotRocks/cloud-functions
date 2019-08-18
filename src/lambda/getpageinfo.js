@@ -143,7 +143,11 @@ exports.handler = async (event, context, callback) => {
                                     streak
                                     todos(completed: true) {
                                         body
-                                        completed_at
+                                        completed_at,
+                                        attachments {
+                                            mime_type,
+                                            url
+                                        }
                                     }
                                }
                              }
@@ -156,7 +160,8 @@ exports.handler = async (event, context, callback) => {
                     pageInfo.wipStreak = user.streak;
                     pageInfo.wipTasks = user.todos.map(task => ({
                         message: task.body,
-                        timeAgo: moment(task.completed_at).from(Date.now())
+                        timeAgo: moment(task.completed_at).from(Date.now()),
+                        image: task.attachments.length > 0 && task.attachments[0].mime_type.startsWith(`image`) ? task.attachments[0].url : null
                     }))
                 })
                 .catch(err => console.log(err)))
