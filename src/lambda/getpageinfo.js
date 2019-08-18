@@ -223,6 +223,21 @@ exports.handler = async (event, context, callback) => {
             }
             if(typeof metadata.gitHubUsername == 'string' && metadata.gitHubUsername.length > 0){
                 pageInfo.gitHubUsername = metadata.gitHubUsername;
+                promiseChains.push(rp({
+                    method: `GET`,
+                    uri: `https://api.github.com/users/${metadata.gitHubUsername}/repos`,
+                    json: true
+                }))
+                .then(res => {
+                    if (Array.isArray(res)) {
+                        pageInfo.gitHubRepos = res.filter(repo => !repo.fork).map(repo => ({
+                            name: repo.name,
+                            description: repo.description,
+                            url: repo.html_url,
+                            stars: repo.stargazers_count
+                        }))
+                    }
+                })
             }
             if(typeof metadata.linkedinUsername == 'string' && metadata.linkedinUsername.length > 0){
                 pageInfo.linkedinUsername = metadata.linkedinUsername;
