@@ -22,6 +22,7 @@ exports.handler = async (event, context, callback) => {
     const moment = require('moment');
     const marked = require('marked');
     const sanitizeHtml = require('sanitize-html');
+    const emoji = require('node-emoji');
 
     return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
@@ -257,7 +258,7 @@ exports.handler = async (event, context, callback) => {
                     if (Array.isArray(res)) {
                         pageInfo.gitHubRepos = res.filter(repo => !repo.fork && !repo.archived).map(repo => ({
                             name: repo.name,
-                            description: repo.description,
+                            description: emoji.emojify(repo.description),
                             url: repo.html_url,
                             stars: isNaN(repo.stargazers_count) ? 0 : repo.stargazers_count
                         })).sort((a,b) => b.stars - a.stars)
