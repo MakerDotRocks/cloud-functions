@@ -255,7 +255,7 @@ exports.handler = async (event, context, callback) => {
                 promiseChains.push(gitHubRequest(`https://api.github.com/users/${metadata.gitHubUsername}/repos`)
                 .then(res => {
                     if (Array.isArray(res)) {
-                        pageInfo.gitHubRepos = res.filter(repo => !repo.fork).map(repo => ({
+                        pageInfo.gitHubRepos = res.filter(repo => !repo.fork && !repo.archived).map(repo => ({
                             name: repo.name,
                             description: repo.description,
                             url: repo.html_url,
