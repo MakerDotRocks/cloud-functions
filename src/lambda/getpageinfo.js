@@ -226,8 +226,12 @@ exports.handler = async (event, context, callback) => {
                 promiseChains.push(rp({
                     method: `GET`,
                     uri: `https://api.github.com/users/${metadata.gitHubUsername}/repos`,
+                    headers: {
+                        Accept: `application/vnd.github.v3+json`,
+                        'User-Agent': `maker.rocks`
+                    },
                     json: true
-                }))
+                })
                 .then(res => {
                     if (Array.isArray(res)) {
                         pageInfo.gitHubRepos = res.filter(repo => !repo.fork).map(repo => ({
@@ -237,7 +241,7 @@ exports.handler = async (event, context, callback) => {
                             stars: repo.stargazers_count
                         }))
                     }
-                })
+                }))
             }
             if(typeof metadata.linkedinUsername == 'string' && metadata.linkedinUsername.length > 0){
                 pageInfo.linkedinUsername = metadata.linkedinUsername;
