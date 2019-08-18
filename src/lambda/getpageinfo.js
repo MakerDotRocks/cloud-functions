@@ -236,7 +236,7 @@ exports.handler = async (event, context, callback) => {
                     })
                     .then(res => {
                         if (res.data && Array.isArray(res.data)) {
-                            arrayToConcat.concat(res.data)
+                            arrayToConcat = arrayToConcat.concat(res.data)
                         }
                         if (res.headers.link) {
                             // console.log(res.headers.link)
