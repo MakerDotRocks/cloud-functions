@@ -247,6 +247,8 @@ exports.handler = async (event, context, callback) => {
                             } else {
                                 return arrayToConcat
                             }
+                        } else {
+                            return arrayToConcat
                         }
                     })
                 }
