@@ -238,8 +238,8 @@ exports.handler = async (event, context, callback) => {
                             name: repo.name,
                             description: repo.description,
                             url: repo.html_url,
-                            stars: repo.stargazers_count
-                        }))
+                            stars: isNaN(repo.stargazers_count) ? 0 : repo.stargazers_count
+                        })).sort((a,b) => b.stars - a.stars)
                     }
                 }))
             }
