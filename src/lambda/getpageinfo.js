@@ -240,6 +240,8 @@ exports.handler = async (event, context, callback) => {
                             url: repo.html_url,
                             stars: isNaN(repo.stargazers_count) ? 0 : repo.stargazers_count
                         })).sort((a,b) => b.stars - a.stars)
+                        pageInfo.gitHubTotalStars = pageInfo.gitHubRepos.length > 0 ? pageInfo.gitHubRepos.map(r => r.stars).reduce((total,num) => total + num) : 0;
+                        pageInfo.gitHubAverageStars = Math.round(pageInfo.gitHubTotalStars/pageInfo.gitHubRepos.length);
                     }
                 }))
             }
