@@ -184,7 +184,8 @@ exports.handler = async (event, context, callback) => {
                 .then(res => {
                     pageInfo.makerlogTasks = res.filter(task => task.done).map(task => ({
                         message: task.content,
-                        timeAgo: moment(task.done_at).from(Date.now())
+                        timeAgo: moment(task.done_at).from(Date.now()),
+                        image: task.attachment
                     }));
                 })
                 .catch(err => console.log(err)));
