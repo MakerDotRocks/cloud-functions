@@ -223,15 +223,34 @@ exports.handler = async (event, context, callback) => {
             }
             if(typeof metadata.gitHubUsername == 'string' && metadata.gitHubUsername.length > 0){
                 pageInfo.gitHubUsername = metadata.gitHubUsername;
-                promiseChains.push(rp({
-                    method: `GET`,
-                    uri: `https://api.github.com/users/${metadata.gitHubUsername}/repos`,
-                    headers: {
-                        Accept: `application/vnd.github.v3+json`,
-                        'User-Agent': `maker.rocks`
-                    },
-                    json: true
-                })
+                function gitHubRequest(url, arrayToConcat = []) {
+                    return rp({
+                        method: `GET`,
+                        uri: url,
+                        headers: {
+                            Accept: `application/vnd.github.v3+json`,
+                            'User-Agent': `maker.rocks`
+                        },
+                        json: true,
+                        transform: _include_headers
+                    })
+                    .then(res => {
+                        if (res.data && Array.isArray(res.data)) {
+                            arrayToConcat.concat(res.data)
+                        }
+                        if (res.headers.link) {
+                            // console.log(res.headers.link)
+                            var search = /<([^<>]+?)>; rel="next"/.exec(res.headers.link)
+                            if (search && search[1]) {
+                                // console.log(search[1])
+                                return gitHubRequest(search[1], arrayToConcat)
+                            } else {
+                                return arrayToConcat
+                            }
+                        }
+                    })
+                }
+                promiseChains.push(gitHubRequest(`https://api.github.com/users/${metadata.gitHubUsername}/repos`)
                 .then(res => {
                     if (Array.isArray(res)) {
                         pageInfo.gitHubRepos = res.filter(repo => !repo.fork).map(repo => ({
@@ -275,4 +294,8 @@ exports.handler = async (event, context, callback) => {
             callback(null, {statusCode: 404,headers,body: JSON.stringify({code: 'USER_NOT_FOUND'})});
         }
     });
+}
+
+function _include_headers (body, response, resolveWithFullResponse) {
+    return {'headers': response.headers, 'data': body};
 }
