@@ -20,7 +20,9 @@ exports.handler = async (event, context, callback) => {
     const rp = require('request-promise');
     const humanizeDuration = require('humanize-duration');
     const moment = require('moment');
-    
+    const marked = require('marked');
+    const sanitizeHtml = require('sanitize-html');
+
     return stripe.customers.list({email: body.username + '@username.maker.rocks'})
     .then(res => {
         var customersWithUsername = res.data;
@@ -217,11 +219,28 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.gitHubUsername == 'string' && metadata.gitHubUsername.length > 0){
                 pageInfo.gitHubUsername = metadata.gitHubUsername;
             }
+            if(typeof metadata.linkedinUsername == 'string' && metadata.linkedinUsername.length > 0){
+                pageInfo.linkedinUsername = metadata.linkedinUsername;
+            }
             if(typeof metadata.youtubeURL == 'string' && metadata.youtubeURL.length > 0){
                 pageInfo.youtubeURL = metadata.youtubeURL;
             }
             if(typeof metadata.profileHue == 'string' && metadata.profileHue.length > 0){
                 pageInfo.profileHue = metadata.profileHue;
+            }
+            if(typeof metadata.bio == 'string' && metadata.bio.length > 0){
+                pageInfo.bio = sanitizeHtml(marked(metadata.bio), {
+                    transformTags: {
+                        a: function(tagName, attribs) {
+                            attribs.target = '_blank';
+                            attribs.rel = 'noopener noreferrer nofollow';
+                            return {
+                                tagName: tagName,
+                                attribs: attribs
+                            };
+                        }
+                    }
+                });
             }
             
             return Promise.all(promiseChains)
