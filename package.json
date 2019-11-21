@@ -10,9 +10,6 @@
     "build": "yarn build:server",
     "build:server": "netlify-lambda build src/lambda"
   },
-  "engines": {
-    "node" : ">=4 <=9"
-  },
   "author": "imorente",
   "license": "MIT",
   "devDependencies": {
