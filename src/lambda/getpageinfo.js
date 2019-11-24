@@ -219,6 +219,9 @@ exports.handler = async (event, context, callback) => {
             if(typeof metadata.mediumUsername == 'string' && metadata.mediumUsername.length > 0){
                 pageInfo.mediumUsername = metadata.mediumUsername;
             }
+           if(typeof metadata.devtoUsername == 'string' && metadata.devtoUsername.length > 0){
+                pageInfo.devtoUsername = metadata.devtoUsername;
+            }
             if(typeof metadata.telegramUsername == 'string' && metadata.telegramUsername.length > 0){
                 pageInfo.telegramUsername = metadata.telegramUsername;
             }
